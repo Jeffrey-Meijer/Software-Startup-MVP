@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\FilterController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/filters', [FilterController::class, 'index'])->name('filters.index');
+Route::post('/filters', [FilterController::class, 'filter'])->name('filters.filter');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
