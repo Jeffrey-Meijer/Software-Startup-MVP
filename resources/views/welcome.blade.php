@@ -18,26 +18,23 @@
             <form method="GET" action="{{ route('home') }}">
                 @csrf
 
-                <!-- Prijsfilter -->
+                <!-- Pricefilter -->
                 <div class="mb-4">
-                    <label for="price" class="block font-medium">Prijs Range (€)</label>
-                    <div class="flex items-center space-x-4">
-                        <input type="number" id="minPrice" name="minPrice" class="w-20 border-gray-300 rounded-md"
-                            value="{{ old('minPrice') }}" readonly>
-                        <input type="range" id="priceRange" name="priceRange" class="flex-grow" min="0" max="5000" step="50"
-                            value="{{ old('priceRange', 2500) }}">
-                        <input type="number" id="maxPrice" name="maxPrice" class="w-20 border-gray-300 rounded-md"
-                            value="{{ old('maxPrice', 2500) }}" readonly>
-                    </div>
+                    <label for="priceCategory" class="block font-medium">Prijs Categorie</label>
+                    <select id="priceCategory" name="priceCategory" class="w-full border-gray-300 rounded-md">
+                        <option value="">Alle</option>
+                        @foreach ($priceCategories as $priceCategory)
+                            <option value="{{ $priceCategory }}" @if (request()->input('priceCategory') == $priceCategory) selected @endif>{{ $priceCategory }}</option>
+                        @endforeach
+                    </select>
                 </div>
-
                 <!-- Continentfilter -->
                 <div class="mb-4">
                     <label for="continent" class="block font-medium">Continent</label>
                     <select id="continent" name="continent" class="w-full border-gray-300 rounded-md">
                         <option value="">-- Kies een continent --</option>
                         @foreach ($continents as $continent)
-                            <option value="{{ $continent }}" @if (old('continent') == $continent) selected @endif>{{ $continent }}</option>
+                            <option value="{{ $continent }}" @if (request()->input('continent') == $continent) selected @endif>{{ $continent }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -48,7 +45,7 @@
                     <select id="climate" name="climate" class="w-full border-gray-300 rounded-md">
                         <option value="">-- Kies een klimaat --</option>
                         @foreach ($climates as $climate)
-                            <option value="{{ $climate }}" @if (old('climate') == $climate) selected @endif>{{ $climate }}</option>
+                            <option value="{{ $climate }}" @if (request()->input('climate') == $climate) selected @endif>{{ $climate }}</option>
                         @endforeach
                     </select>
                 </div>

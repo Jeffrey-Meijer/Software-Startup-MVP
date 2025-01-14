@@ -11,8 +11,8 @@ class DestinationController extends Controller
     {
         $query = Destination::query();
 
-        if ($request->has('minPrice') && $request->has('maxPrice')) {
-            $query->whereBetween('price', [$request->minPrice, $request->maxPrice]);
+        if ($request->has('priceCategory') && $request->priceCategory != '') {
+            $query->where('price_category', $request->priceCategory);
         }
         if ($request->has('continent') && $request->continent != '') {
             $query->where('continent', $request->continent);
@@ -22,6 +22,7 @@ class DestinationController extends Controller
         }
 
         $destinations = $query->get();
+        $priceCategories = Destination::distinct()->pluck('price_category');
         $continents = Destination::distinct()->pluck('continent');
         $climates = Destination::distinct()->pluck('climate');
 
@@ -32,6 +33,7 @@ class DestinationController extends Controller
             'destinations' => $destinations,
             'continents' => $continents,
             'climates' => $climates,
+            'priceCategories' => $priceCategories,
             'wheelData' => $wheelData, // Pass the data for the wheel
         ]);
     }
