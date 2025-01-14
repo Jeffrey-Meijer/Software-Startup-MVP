@@ -1,3 +1,55 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+#wheelContainer {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    margin: 20px auto;
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#marker {
+    position: absolute;
+    top: 50%;
+    right: -15px;
+    transform: translateY(-50%) rotate(180deg);
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 25px solid red;
+    /* Create the triangle pointing to the wheel */
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#buttonContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#buttonContainer button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}

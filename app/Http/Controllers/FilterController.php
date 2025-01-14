@@ -2,23 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Destination;
 use Illuminate\Http\Request;
-
 
 class FilterController extends Controller
 {
     public function index()
     {
-        $continents = ['Europa', 'Azië', 'Noord-Amerika', 'Zuid-Amerika', 'Afrika', 'Oceanië'];
-        return view('filters.index', compact('continents'));
-    }
-    public function filter(Request $request)
-    {
-        $minPrice = $request->input('minPrice', 0);
-        $maxPrice = $request->input('maxPrice', 5000);
+        // Haal alle bestemmingen op
+        $destinations = Destination::all();
 
-        // Log::info("Prijs range: €{$minPrice} - €{$maxPrice}");
+        // Optioneel: Haal unike continenten en klimaten op uit de bestemmingen
+        $continents = Destination::distinct()->pluck('continent');
+        $climates = Destination::distinct()->pluck('climate');
 
-        return back()->with('success', "Filters toegepast: €{$minPrice} - €{$maxPrice}");
+        // Stuur data door naar de view
+        return view('welcome', [
+            'destinations' => $destinations,
+            'continents' => $continents,
+            'climates' => $climates
+        ]);
+        
     }
 }

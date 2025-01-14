@@ -12,10 +12,17 @@
     {{-- @include('layouts.navigation') --}}
     <div class="flex w-full h-full">
 
-        <!-- Ruimte voor het rad -->
+        <!-- Vakantiewiel -->
         <div class="flex-grow flex items-center justify-center">
             <div class="bg-white w-full h-full max-w-4xl max-h-96 flex items-center justify-center rounded-lg shadow-md">
-                <p class="text-gray-500">Hier komt straks het rad!</p>
+                <div id="wheelContainer">
+                    <canvas id="wheelCanvas" width="500" height="500"></canvas>
+                    <div id="marker"></div>
+                </div>
+                <div id="buttonContainer" class="mt-4">
+                    <button id="spinButton" class="bg-blue-500 text-white py-2 px-4 rounded-md mr-2">Spin the Wheel</button>
+                    <button id="filterButton" class="bg-green-500 text-white py-2 px-4 rounded-md">Apply Filter</button>
+                </div>
             </div>
         </div>
 
@@ -31,11 +38,11 @@
                     <label for="price" class="block font-medium">Prijs Range (€)</label>
                     <div class="flex items-center space-x-4">
                         <input type="number" id="minPrice" name="minPrice" class="w-20 border-gray-300 rounded-md"
-                            readonly>
-                        <input type="range" id="priceRange" name="priceRange" class="flex-grow" min="0"
-                            max="5000" step="50" value="2500">
+                            value="{{ old('minPrice', 0) }}" readonly>
+                        <input type="range" id="priceRange" name="priceRange" class="flex-grow" min="0" max="5000" step="50"
+                            value="{{ old('priceRange', 2500) }}">
                         <input type="number" id="maxPrice" name="maxPrice" class="w-20 border-gray-300 rounded-md"
-                            readonly>
+                            value="{{ old('maxPrice', 2500) }}" readonly>
                     </div>
                 </div>
 
@@ -45,7 +52,7 @@
                     <select id="continent" name="continent" class="w-full border-gray-300 rounded-md">
                         <option value="">-- Kies een continent --</option>
                         @foreach ($continents as $continent)
-                            <option value="{{ $continent }}">{{ $continent }}</option>
+                            <option value="{{ $continent }}" @if (old('continent') == $continent) selected @endif>{{ $continent }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -55,12 +62,9 @@
                     <label for="climate" class="block font-medium">Klimaat</label>
                     <select id="climate" name="climate" class="w-full border-gray-300 rounded-md">
                         <option value="">-- Kies een klimaat --</option>
-                        <option value="winter">Winter</option>
-                        <option value="zomer">Zomer</option>
-                        <option value="lente">Lente</option>
-                        <option value="herfst">Herfst</option>
-                        <option value="tropisch">Tropisch</option>
-                        <option value="koud">Koud</option>
+                        @foreach ($climates as $climate)
+                            <option value="{{ $climate }}" @if (old('climate') == $climate) selected @endif>{{ $climate }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -76,6 +80,23 @@
         </aside>
     </div>
 
+    <!-- Vakantiebestemmingen -->
+    <div class="mt-6">
+        <h2 class="text-2xl font-bold mb-4">Vakantiebestemmingen</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @foreach ($destinations as $destination)
+                <div class="border rounded-lg p-4 shadow-md bg-white">
+                    <img src="{{ $destination->image_url }}" alt="{{ $destination->name }}" class="rounded-md w-full h-32 object-cover mb-2">
+                    <h3 class="text-lg font-bold">{{ $destination->name }}</h3>
+                    <p class="text-sm">{{ $destination->description }}</p>
+                    <p class="text-sm text-gray-500">Continent: {{ $destination->continent }}</p>
+                    <p class="text-sm text-gray-500">Klimaat: {{ $destination->climate }}</p>
+                    <p class="text-sm text-gray-500">Prijs: {{ $destination->price_category }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
     <!-- JavaScript voor de prijs-slider -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -83,11 +104,9 @@
             const maxPriceInput = document.getElementById('maxPrice');
             const priceRange = document.getElementById('priceRange');
 
-            // Stel initiële waarden in
             minPriceInput.value = 0;
             maxPriceInput.value = priceRange.value;
 
-            // Update maximumwaarde op slepen
             priceRange.addEventListener('input', function() {
                 maxPriceInput.value = priceRange.value;
             });
