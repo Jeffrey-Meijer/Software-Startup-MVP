@@ -67,100 +67,101 @@
     </div>
     <button id="spinButton">Spin the Wheel</button>
 
-    <script>
-        const wheelData = @json($dataPoints);
+<script>
+    // Use the passed destinations for the wheel
+    const wheelData = @json($wheelData);
 
-        // Canvas setup
-        const canvas = document.getElementById("wheelCanvas");
-        const ctx = canvas.getContext("2d");
-        const size = canvas.width / 2; // Half the canvas width
-        const radius = size; // Radius of the wheel
-        const center = {
-            x: size,
-            y: size
-        }; // Center of the wheel
-        const segmentAngle = (2 * Math.PI) / wheelData.length; // Angle for each segment
-        let rotation = 0; // Current rotation of the wheel
-        let spinning = false; // Prevent multiple spins
+    // Canvas setup
+    const canvas = document.getElementById("wheelCanvas");
+    const ctx = canvas.getContext("2d");
+    const size = canvas.width / 2; // Half the canvas width
+    const radius = size; // Radius of the wheel
+    const center = {
+        x: size,
+        y: size
+    }; // Center of the wheel
+    const segmentAngle = (2 * Math.PI) / wheelData.length; // Angle for each segment
+    let rotation = 0; // Current rotation of the wheel
+    let spinning = false; // Prevent multiple spins
 
-        // Draw the wheel
-        function drawWheel() {
-            for (let i = 0; i < wheelData.length; i++) {
-                const angle = i * segmentAngle;
-                // Alternate segment colors
-                ctx.fillStyle = i % 2 === 0 ? "#FFDDC1" : "#FFC0CB";
-                ctx.beginPath();
-                ctx.moveTo(center.x, center.y);
-                ctx.arc(center.x, center.y, radius, angle, angle + segmentAngle);
-                ctx.closePath();
-                ctx.fill();
+    // Draw the wheel
+    function drawWheel() {
+        for (let i = 0; i < wheelData.length; i++) {
+            const angle = i * segmentAngle;
+            // Alternate segment colors
+            ctx.fillStyle = i % 2 === 0 ? "#FFDDC1" : "#FFC0CB";
+            ctx.beginPath();
+            ctx.moveTo(center.x, center.y);
+            ctx.arc(center.x, center.y, radius, angle, angle + segmentAngle);
+            ctx.closePath();
+            ctx.fill();
 
-                // Add text
-                ctx.save();
-                ctx.translate(center.x, center.y);
-                ctx.rotate(angle + segmentAngle / 2);
-                ctx.textAlign = "right";
-                ctx.fillStyle = "#000";
-                ctx.font = "16px Arial";
-                ctx.fillText(wheelData[i], radius - 10, 5);
-                ctx.restore();
-            }
-        }
-
-        // Spin the wheel
-        function spinWheel() {
-            if (spinning) return; // Prevent multiple spins
-            spinning = true;
-
-            const totalRotation = (Math.random() * 5 + 5) * 360; // Random spin between 5-10 rotations
-            const finalRotation = totalRotation % 360; // Only the remaining rotation matters
-            const duration = 5000; // Spin duration in ms
-            const startTime = Date.now();
-
-            function animate() {
-                const elapsedTime = Date.now() - startTime;
-                const progress = Math.min(elapsedTime / duration, 1); // Normalize time
-                const easing = 1 - Math.pow(1 - progress, 3); // Ease-out cubic
-                const currentRotation = easing * totalRotation;
-
-                rotation = currentRotation; // Update rotation
-                draw(); // Redraw the wheel
-
-                if (progress < 1) {
-                    requestAnimationFrame(animate); // Continue animation
-                } else {
-                    determineResult(finalRotation); // Determine result
-                    spinning = false; // Allow new spins
-                }
-            }
-
-            animate();
-        }
-
-        // Determine the result based on the final rotation
-        function determineResult(finalRotation) {
-            const adjustedRotation = (360 - (finalRotation % 360)) % 360; // Adjust for clockwise rotation
-            const segmentIndex = Math.floor(adjustedRotation / (360 / wheelData.length));
-            alert(`You landed on: ${wheelData[segmentIndex]}`);
-        }
-
-        // Redraw the canvas with current rotation
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+            // Add text
             ctx.save();
             ctx.translate(center.x, center.y);
-            ctx.rotate((rotation * Math.PI) / 180);
-            ctx.translate(-center.x, -center.y);
-            drawWheel();
+            ctx.rotate(angle + segmentAngle / 2);
+            ctx.textAlign = "right";
+            ctx.fillStyle = "#000";
+            ctx.font = "16px Arial";
+            ctx.fillText(wheelData[i], radius - 10, 5);
             ctx.restore();
         }
+    }
 
-        // Initialize the wheel
-        draw();
+    // Spin the wheel
+    function spinWheel() {
+        if (spinning) return; // Prevent multiple spins
+        spinning = true;
 
-        // Add spin button event listener
-        document.getElementById("spinButton").addEventListener("click", spinWheel);
-    </script>
+        const totalRotation = (Math.random() * 5 + 5) * 360; // Random spin between 5-10 rotations
+        const finalRotation = totalRotation % 360; // Only the remaining rotation matters
+        const duration = 5000; // Spin duration in ms
+        const startTime = Date.now();
+
+        function animate() {
+            const elapsedTime = Date.now() - startTime;
+            const progress = Math.min(elapsedTime / duration, 1); // Normalize time
+            const easing = 1 - Math.pow(1 - progress, 3); // Ease-out cubic
+            const currentRotation = easing * totalRotation;
+
+            rotation = currentRotation; // Update rotation
+            draw(); // Redraw the wheel
+
+            if (progress < 1) {
+                requestAnimationFrame(animate); // Continue animation
+            } else {
+                determineResult(finalRotation); // Determine result
+                spinning = false; // Allow new spins
+            }
+        }
+
+        animate();
+    }
+
+    // Determine the result based on the final rotation
+    function determineResult(finalRotation) {
+        const adjustedRotation = (360 - (finalRotation % 360)) % 360; // Adjust for clockwise rotation
+        const segmentIndex = Math.floor(adjustedRotation / (360 / wheelData.length));
+        alert(`You landed on: ${wheelData[segmentIndex]}`);
+    }
+
+    // Redraw the canvas with current rotation
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+        ctx.save();
+        ctx.translate(center.x, center.y);
+        ctx.rotate((rotation * Math.PI) / 180);
+        ctx.translate(-center.x, -center.y);
+        drawWheel();
+        ctx.restore();
+    }
+
+    // Initialize the wheel
+    draw();
+
+    // Add spin button event listener
+    document.getElementById("spinButton").addEventListener("click", spinWheel);
+</script>
         </div>
 
 </body>

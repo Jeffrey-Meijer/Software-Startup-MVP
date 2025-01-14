@@ -9,10 +9,8 @@ class DestinationController extends Controller
 {
     public function index(Request $request)
     {
-        // Haal bestemmingen op en filter indien nodig
         $query = Destination::query();
 
-        // Filters zoals prijs, continent en klimaat
         if ($request->has('minPrice') && $request->has('maxPrice')) {
             $query->whereBetween('price', [$request->minPrice, $request->maxPrice]);
         }
@@ -27,10 +25,14 @@ class DestinationController extends Controller
         $continents = Destination::distinct()->pluck('continent');
         $climates = Destination::distinct()->pluck('climate');
 
+        // Pass the destination names to the view for the wheel
+        $wheelData = $destinations->pluck('name'); // Assuming 'name' is the destination's name
+
         return view('welcome', [
             'destinations' => $destinations,
             'continents' => $continents,
             'climates' => $climates,
+            'wheelData' => $wheelData, // Pass the data for the wheel
         ]);
     }
 }
