@@ -13,12 +13,16 @@ class Destination extends Model
     protected $fillable = [
         'name',
         'continent',
-        'climate', 
+        'climate',
         'price_category',
         'description',
         'image_url',
+        'price',  // Toegevoegd voor de prijs
     ];
 
-    // Optioneel: als de primaire sleutel geen 'id' is
+    // De primaire sleutel
     protected $primaryKey = 'destination_id';
+
+    // Laravel beheert automatisch 'created_at' en 'updated_at'
+    public $timestamps = true;
 }

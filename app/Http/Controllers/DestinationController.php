@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
@@ -36,5 +37,32 @@ class DestinationController extends Controller
             'priceCategories' => $priceCategories,
             'wheelData' => $wheelData, // Pass the data for the wheel
         ]);
+    }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'continent' => 'required|string',
+            'climate' => 'required|string',
+            'price_category' => 'required|string',
+            'description' => 'nullable|string',
+            'image_url' => 'nullable|url',
+        ]);
+
+        // Creëer een nieuwe bestemming, met timestamps
+        $destination = Destination::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'continent' => $request->continent,
+            'climate' => $request->climate,
+            'price_category' => $request->price_category,
+            'description' => $request->description,
+            'image_url' => $request->image_url,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Bestemming toegevoegd!');
     }
 }
