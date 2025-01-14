@@ -42,7 +42,6 @@ class DestinationController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
             'continent' => 'required|string',
             'climate' => 'required|string',
             'price_category' => 'required|string',
@@ -53,7 +52,6 @@ class DestinationController extends Controller
         // Creëer een nieuwe bestemming, met timestamps
         $destination = Destination::create([
             'name' => $request->name,
-            'price' => $request->price,
             'continent' => $request->continent,
             'climate' => $request->climate,
             'price_category' => $request->price_category,

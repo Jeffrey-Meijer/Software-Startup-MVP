@@ -17,7 +17,6 @@ class Destination extends Model
         'price_category',
         'description',
         'image_url',
-        'price',  // Toegevoegd voor de prijs
     ];
 
     // De primaire sleutel
