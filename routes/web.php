@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FilterController;
+use App\Http\Controllers\WheelController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,6 +11,9 @@ Route::get('/', function () {
 
 Route::get('/filters', [FilterController::class, 'index'])->name('filters.index');
 Route::post('/filters', [FilterController::class, 'filter'])->name('filters.filter');
+
+Route::get('/rad', [WheelController::class, 'show'])->name('wheel.show');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
