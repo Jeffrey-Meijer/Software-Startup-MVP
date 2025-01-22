@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreign('destination_id')->constrained('destinations')->onDelete('cascade');
             $table->foreignId('travel_agency_id')->constrained('travel_agency')->onDelete('cascade');
+            $table->decimal('price', 8, 2);
         });
     }
 
