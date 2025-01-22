@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('travel_agency_link', function (Blueprint $table) {
             $table->id();
-            $table->foreign('destination_id')->constrained('destinations')->onDelete('cascade');
+            $table->foreignId('destination_id')->constrained('destinations')->onDelete('cascade');
             $table->foreignId('travel_agency_id')->constrained('travel_agency')->onDelete('cascade');
             $table->decimal('price', 8, 2);
         });
