@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('travel_agency', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->int('phone');
+            $table->string('phone');
             $table->string('email');
             $table->timestamps();
         });
