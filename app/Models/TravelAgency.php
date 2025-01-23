@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class TravelAgency extends Model
 {
-    use HasFactory;
 
-    protected $table = 'travel_agency'; // De tabelnaam
-    protected $fillable = ['name', 'email', 'phone']; // Vulbare velden
+    protected $table = 'travel_agency'; 
+    protected $fillable = ['name', 'email', 'phone']; 
 
     // Relatie: een reisbureau kan meerdere bestemmingen hebben
     public function destinations()
