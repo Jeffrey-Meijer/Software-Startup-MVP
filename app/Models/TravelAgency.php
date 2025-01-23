@@ -2,20 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class TravelAgency extends Model
 {
-    use HasFactory;
+    protected $table = 'travel_agency'; 
+    protected $fillable = ['name', 'email', 'phone']; 
 
-    protected $table = 'travel_agency'; // Geef expliciet de tabelnaam op
-
-    protected $fillable = [
-        'name',
-        'phone',
-        'email',
-        'created_at',
-        'updated_at',
-    ];
+    // Relatie: een reisbureau kan meerdere bestemmingen hebben
+    public function destinations()
+    {
+        return $this->hasMany(Destination::class);
+    }
 }
