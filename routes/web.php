@@ -3,16 +3,20 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DestinationController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TravelAgencyController;
+
 
 Route::get('/', [DestinationController::class, 'index'])->name('home'); // Gebruik hier de controller voor de bestemmingen
 
 // Dashboard route
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $destinations = App\Models\Destination::all();  // Fetch all destinations
+    return view('dashboard', compact('destinations'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/destinations', [DestinationController::class, 'store'])->name('destinations.store');
+    Route::post('/travel-agency', [TravelAgencyController::class, 'store'])->name('travel-agency.store');
 });
 // Profile routes
 Route::middleware('auth')->group(function () {
