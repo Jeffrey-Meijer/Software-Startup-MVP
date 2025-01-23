@@ -63,4 +63,15 @@ class DestinationController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Bestemming toegevoegd!');
     }
+    // This function gets called by the wheel to get the destination details after landing on a destination
+    public function getDestinationDetail()
+    {
+        $data = request()->all();
+        $destination = $data['vakantie'];
+
+        $destination = Destination::where('name', $destination)->first();
+
+
+        return $destination;
+    }
 }

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Vakantiebestemmingen</title>
     @vite('resources/css/app.css')
 </head>
@@ -139,7 +140,19 @@
     function determineResult(finalRotation) {
         const adjustedRotation = (360 - (finalRotation % 360)) % 360; // Adjust for clockwise rotation
         const segmentIndex = Math.floor(adjustedRotation / (360 / wheelData.length));
-        alert(`You landed on: ${wheelData[segmentIndex]}`);
+            $.ajax({
+                type: 'POST',
+                url: "{{route('destination.detail')}}",
+                data: {
+                    vakantie: wheelData[segmentIndex]
+                },
+                headers: {'X-CSRF-TOKEN': $('input[name="_token"]').val()},
+                success: function(data) {
+                    // Create detail
+                    console.log(data);
+                    createDetail(data);
+                }
+            });
     }
 
     // Redraw the canvas with current rotation
@@ -153,12 +166,23 @@
         ctx.restore();
     }
 
+    function createDetail(data) {
+        const destinationDetails = document.getElementById("destinationDetails");
+        destinationDetails.innerHTML = `
+            <h1>${data.name}</h1>
+            <p>${data.description}</p>
+        `;
+    }
+
     // Initialize the wheel
     draw();
 
     // Add spin button event listener
     document.getElementById("spinButton").addEventListener("click", spinWheel);
 </script>
+    <div class="destination-details">
+        <div id="destinationDetails"></div>
+    </div>
         </div>
 
 </body>
