@@ -4,6 +4,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
+use App\Models\TravelAgency;
+use App\Models\TravelAgencyLink;
 use Illuminate\Http\Request;
 
 class DestinationController extends Controller
@@ -68,10 +70,19 @@ class DestinationController extends Controller
     {
         $data = request()->all();
         $destination = $data['vakantie'];
-
         $destination = Destination::where('name', $destination)->first();
 
+        $destinationId = $destination->id;
 
-        return $destination;
+        $hasTravelAgencies = TravelAgencyLink::where('destination_id', $destinationId)->exists();
+
+        if ($hasTravelAgencies) {
+            $travelAgencies = TravelAgencyLink::where('destination_id', $destinationId)->travelAgency;
+        } else {
+            $travelAgencies = null;
+        }
+
+
+        return [$destination, $travelAgencies];
     }
 }
