@@ -65,6 +65,8 @@
 
                 <!-- Filter knop -->
                 <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md">Filter toepassen</button>
+                <a href="{{ route('home') }}" class="inline-block ml-4 bg-gray-500 text-white py-2 px-4 rounded-md">Reset Filters</a>
+
             </form>
         </aside>
 
