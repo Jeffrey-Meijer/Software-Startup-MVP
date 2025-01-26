@@ -75,7 +75,7 @@
                 <canvas id="wheelCanvas" width="500" height="500"></canvas>
                 <div id="marker"></div>
             </div>
-            <button id="spinButton">Spin the Wheel</button>
+            <button id="spinButton" class="bg-blue-500 text-white py-2 px-4 rounded-md">Draai het rad</button>
 
             <script>
                 // Use the passed destinations for the wheel
@@ -193,13 +193,14 @@
                         document.getElementById("travelAgencies").innerHTML = "<p>Geen reisbureaus gevonden</p>";
                     } else {
                         let travelAgenciesHtml = "<h2>Reisbureaus</h2>";
-                        travelAgenciesHtml += "<ul>";
+
+                        travelAgenciesHtml += "<div class='travelAgencies'>";
                         for (const travelAgency of $travelAgencies) {
                             if (travelAgency.travel_agency != null) {
-                                travelAgenciesHtml += `<li>${travelAgency.travel_agency.name} - €${travelAgency.price}</li>`;
+                                travelAgenciesHtml += `<div class="travelAgency-card"><a href="#">${travelAgency.travel_agency.name} - €${travelAgency.price}</a></div>`;
                             }
                         }
-                        travelAgenciesHtml += "</ul>";
+                        travelAgenciesHtml += "</div>";
                         document.getElementById("travelAgencies").innerHTML = travelAgenciesHtml;
                     }
 
