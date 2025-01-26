@@ -15,8 +15,8 @@ class TravelAgencyLink extends Model
     {
         return $this->hasOne(Destination::class);
     }
-    public function travelAgency() : HasOne
+    public function travelAgency()
     {
-        return $this->hasOne(TravelAgency::class);
+        return $this->belongsTo(TravelAgency::class, 'travel_agency_id', 'id');
     }
 }

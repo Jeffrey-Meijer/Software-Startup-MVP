@@ -195,13 +195,13 @@
                         let travelAgenciesHtml = "<h2>Reisbureaus</h2>";
                         travelAgenciesHtml += "<ul>";
                         for (const travelAgency of $travelAgencies) {
-                            travelAgenciesHtml += `<li>${travelAgency.name} - €${travelAgency.price}</li>`;
+                            if (travelAgency.travel_agency != null) {
+                                travelAgenciesHtml += `<li>${travelAgency.travel_agency.name} - €${travelAgency.price}</li>`;
+                            }
                         }
                         travelAgenciesHtml += "</ul>";
                         document.getElementById("travelAgencies").innerHTML = travelAgenciesHtml;
                     }
-
-                    // document.getElementById("vacationPrice").textContent = `Prijs: €${data.price}`;
 
                     // Toon de popup
                     document.getElementById("vacationPopup").classList.remove("hidden");

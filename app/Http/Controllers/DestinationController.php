@@ -72,12 +72,12 @@ class DestinationController extends Controller
         $destination = $data['vakantie'];
         $destination = Destination::where('name', $destination)->first();
 
-        $destinationId = $destination->id;
+        $destinationId = $destination->destination_id;
 
         $hasTravelAgencies = TravelAgencyLink::where('destination_id', $destinationId)->exists();
 
         if ($hasTravelAgencies) {
-            $travelAgencies = TravelAgencyLink::where('destination_id', $destinationId)->travelAgency;
+            $travelAgencies = TravelAgencyLink::where('destination_id', $destinationId)->with('travelAgency')->get();
         } else {
             $travelAgencies = null;
         }
