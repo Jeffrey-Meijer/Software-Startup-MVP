@@ -4,6 +4,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destination;
+use App\Models\TravelAgency;
+use App\Models\TravelAgencyLink;
 use Illuminate\Http\Request;
 
 class DestinationController extends Controller
@@ -62,5 +64,25 @@ class DestinationController extends Controller
         ]);
 
         return redirect()->route('dashboard')->with('success', 'Bestemming toegevoegd!');
+    }
+    // This function gets called by the wheel to get the destination details after landing on a destination
+    public function getDestinationDetail()
+    {
+        $data = request()->all();
+        $destination = $data['vakantie'];
+        $destination = Destination::where('name', $destination)->first();
+
+        $destinationId = $destination->destination_id;
+
+        $hasTravelAgencies = TravelAgencyLink::where('destination_id', $destinationId)->exists();
+
+        if ($hasTravelAgencies) {
+            $travelAgencies = TravelAgencyLink::where('destination_id', $destinationId)->with('travelAgency')->get();
+        } else {
+            $travelAgencies = null;
+        }
+
+
+        return [$destination, $travelAgencies];
     }
 }

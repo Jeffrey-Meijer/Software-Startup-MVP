@@ -7,6 +7,7 @@ use App\Http\Controllers\TravelAgencyController;
 
 
 Route::get('/', [DestinationController::class, 'index'])->name('home'); // Gebruik hier de controller voor de bestemmingen
+Route::post('/destination', [DestinationController::class, 'getDestinationDetail'])->name('destination.detail');
 
 // Dashboard route
 Route::get('/dashboard', function () {
