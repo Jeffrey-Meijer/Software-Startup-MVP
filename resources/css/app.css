@@ -31,7 +31,7 @@ canvas {
     height: 0;
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-left: 25px solid red;
+    border-left: 25px solid rgb(255, 255, 255);
     /* Create the triangle pointing to the wheel */
 }
 
@@ -70,13 +70,14 @@ button {
 }
 
 .travelAgency-card {
+    color: white;
     transition: all 0.2s ease-in-out;
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
     margin: 10px;
     text-align: center;
-
+    background-color: rgb(59 130 246);
 }
 
 .travelAgency-card a {
